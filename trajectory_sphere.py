@@ -69,7 +69,7 @@ def simulate_trajectory(mass, ball_radius, loc0, v0, theta0, phidot, time_final)
     return T
 
 
-def velocity_solve(ball_mass, ball_radius, loc0, v0, launch_angle, launch_spin_, 10, goal_height, velocity_high=30.0, velocity_low=4.0):
+def velocity_solve(ball_mass, ball_radius, loc0, launch_angle, launch_spin_,goal_height, velocity_high=30.0, velocity_low=4.0):
     
     v = np.array([velocity_low, 0, velocity_high], dtype=np.double)
     success = 1
@@ -78,7 +78,7 @@ def velocity_solve(ball_mass, ball_radius, loc0, v0, launch_angle, launch_spin_,
         v[1] = 0.5*(v[0] + v[2])
         
         #traj = simulate_trajectory_game(distances[i], v[1], launch_spin)
-        traj = simulate_trajectory(ball_mass, ball_radius, loc0, v0, np.pi-launch_angle, launch_spin_, 10)
+        traj = simulate_trajectory(ball_mass, ball_radius, loc0, v[1], np.pi-launch_angle, launch_spin_, 10)
         
         # ASSUME the goal plan zero crossing event has triggered
         if traj.y[-1] > goal_height:
@@ -90,7 +90,7 @@ def velocity_solve(ball_mass, ball_radius, loc0, v0, launch_angle, launch_spin_,
             success = 0
             break
             
-    return traj, success
+    return traj, v[1], success
 
 # run a test/example case
 if __name__ == "__main__":

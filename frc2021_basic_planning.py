@@ -14,6 +14,9 @@ launch_spin = -10 # rad/s. need to use negative for backspin in this scenario
 def simulate_trajectory_game(distance, v0, launch_spin_):
     return simulate_trajectory(ball_mass, ball_radius, [distance, launch_height], v0, np.pi-launch_angle, launch_spin_, 10)
     
+def velocity_solve_game(distance, launch_angle_, launch_spin_):
+    return velocity_solve(ball_mass, ball_radius, [distance, launch_height], launch_angle_, launch_spin_, goal_height)
+    
 n = 30 # how many distances to check
 distances = np.linspace(launch_dist_min, launch_dist_max, n)
 velocities = np.zeros(distances.shape)
@@ -25,34 +28,11 @@ velocity_high = 30.0
 velocity_low = 4.0
 
 for i in range(n):
-    v = np.array([velocity_low, 0, velocity_high], dtype=np.double)
-    attempts = 0
-    print("NEW DISTANCE!", distances[i])
-    
-    while np.ptp(v) > 0.01:
-        v[1] = 0.5*(v[0] + v[2])
-        
-        traj = simulate_trajectory_game(distances[i], v[1], launch_spin)
-        y_cross = traj.y[-1]
-        # ASSUME the goal plan zero crossing event has triggered
-        
-        #print("  v=", v, "  t=", traj.t[index], "x=", traj.x[index], "y=", traj.y[index])
-        #print("  v=", v, "  t=", traj.t[index+1], "x=", traj.x[index+1], "y=", traj.y[index+1])
-        #print("  Y estimate!", y_cross).
-        
-        if y_cross > goal_height:
-            v[2] = v[1]
-        else:
-            v[0] = v[1]
-            
-        if v[1] > velocity_high*0.95 or v[1] < velocity_low*1.05:
-            success[i] = 0
-            break
-            
+    traj, v, success[i] = velocity_solve_game(distances[i], launch_angle, launch_spin)
     solutions.append(traj)
         
-    print("solved dist[", i, "]=", distances[i],"   v=", v[1])
-    velocities[i] = v[1]
+    print("solved dist[", i, "]=", distances[i],"   v=", v)
+    velocities[i] = v
 
 #########################################################################################################
 # plots!
@@ -91,9 +71,7 @@ plt.xlabel("X position, m")
 plt.ylabel("Y position, m")
 
 #########################################################################################################
-
 # look at sensitivity of a trajectory
-
 # grab one middle of the road one that has a solution 
 # vary the parameters one by one
 
@@ -135,9 +113,4 @@ plt.axis([0, np.max(distances), 0, 2*goal_height])
 plt.grid(True)
 plt.title('Velocity Variation')
 
-#########################################################################################################
-# monte carlo
-# for a range of 
-
 plt.show()
-
