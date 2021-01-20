@@ -77,7 +77,6 @@ def velocity_solve(ball_mass, ball_radius, loc0, launch_angle, launch_spin_,goal
     while np.ptp(v) > 0.01:
         v[1] = 0.5*(v[0] + v[2])
         
-        #traj = simulate_trajectory_game(distances[i], v[1], launch_spin)
         traj = simulate_trajectory(ball_mass, ball_radius, loc0, v[1], np.pi-launch_angle, launch_spin_, 10)
         
         # ASSUME the goal plan zero crossing event has triggered

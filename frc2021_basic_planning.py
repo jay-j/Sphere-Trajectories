@@ -113,4 +113,19 @@ plt.axis([0, np.max(distances), 0, 2*goal_height])
 plt.grid(True)
 plt.title('Velocity Variation')
 
+###########################
+# plot a couple different options from the same launch distance
+
+plt.figure(6)
+example_angles = degrees_to_radians(np.array([42, 50, 58]))
+for angle in example_angles:
+    traj, v, success = velocity_solve_game(4, angle, 0)
+    plt.plot(traj.x, traj.y)
+    
+plt.axis([0, np.max(distances), 0, 2*goal_height])
+plt.grid(True)
+plt.title('Solutions from the same distance')
+plt.xlabel('x position (m)')
+plt.ylabel('y position (m)')
+
 plt.show()
