@@ -55,7 +55,7 @@ def simulate_trajectory(mass, ball_radius, loc0, v0, theta0, phidot, time_final)
     t_span = (0, time_final)
     parameters = (mass, ball_radius)
     
-    soln = solve_ivp(ball_eom, t_span, u0, args=parameters, max_step=0.01, events=[event_goal_plane, event_peak])
+    soln = solve_ivp(ball_eom, t_span, u0, args=parameters, max_step=0.05, events=[event_goal_plane, event_peak])
     
     T = Trajectory()
     T.t = soln.t

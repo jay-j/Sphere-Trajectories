@@ -88,6 +88,7 @@ for i in range(3):
     plt.plot(traj.x, traj.y)
 
 plt.axis([0, np.max(distances), 0, 2*goal_height])
+plt.axis('equal')
 plt.grid(True)
 plt.title('Distance Variation')
 
@@ -99,6 +100,7 @@ for i in range(3):
     plt.plot(traj.x, traj.y)
 
 plt.axis([0, np.max(distances), 0, 2*goal_height])
+plt.axis('equal')
 plt.grid(True)
 plt.title('Angle Variation')
 
@@ -110,6 +112,7 @@ for i in range(3):
     plt.plot(traj.x, traj.y)
 
 plt.axis([0, np.max(distances), 0, 2*goal_height])
+plt.axis('equal')
 plt.grid(True)
 plt.title('Velocity Variation')
 
@@ -123,9 +126,11 @@ for angle in example_angles:
     plt.plot(traj.x, traj.y)
     
 plt.axis([0, np.max(distances), 0, 2*goal_height])
+plt.axis('equal')
 plt.grid(True)
 plt.title('Solutions from the same distance')
 plt.xlabel('x position (m)')
 plt.ylabel('y position (m)')
+
 
 plt.show()

@@ -14,10 +14,10 @@ launch_angle_min_deg = 25
 launch_angle_max_deg = 75
 launch_angle_min = degrees_to_radians(launch_angle_min_deg)
 launch_angle_max = degrees_to_radians(launch_angle_max_deg)
-angle_increments_gen = 2 
+angle_increments_gen = 25
 #launch_angles = np.linspace(launch_angle_min, launch_angle_max,angle_increments_gen)
 #launch_angles = np.array([degrees_to_radians(55)])
-launch_angles = np.array([degrees_to_radians(35), degrees_to_radians(60)]) 
+launch_angles = np.array([degrees_to_radians(45), degrees_to_radians(60)]) # 35,60 
 angle_increments = launch_angles.shape[0]
 
 distances = np.linspace(launch_dist_min, launch_dist_max, distance_increments)
@@ -30,7 +30,7 @@ launch_spin = -0
 # uncertainties!
 distance_1sigma = 0.1 # m
 velocity_1sigma = 0.1 # m/s
-launch_angle_1sigma_deg = 0.2
+launch_angle_1sigma_deg = 2
 launch_angle_1sigma = degrees_to_radians(launch_angle_1sigma_deg)
 
 def simulate_trajectory_game(distance, v0, launch_angle_):
@@ -55,6 +55,7 @@ class SingleStrategy:
 launch_angle_best = np.zeros((distance_increments,))
 launch_velocity_best = np.zeros((distance_increments,))
 shot_std_best = 10*np.ones((distance_increments,))
+trajectory_best = distance_increments*[None]
 
 for d in range(distance_increments):
     print("NEW DISTANCE!!!")
@@ -87,6 +88,7 @@ for d in range(distance_increments):
             shot_std_best[d] = shot_std
             launch_angle_best[d] = launch_angles[a]
             launch_velocity_best[d] = velocity
+            trajectory_best[d] = traj
             
     print("   Distance", distances[d], " best angle ", launch_angle_best[d], " velocity", launch_velocity_best[d], "  std ", shot_std_best[d])
 
@@ -94,6 +96,9 @@ print("launch angle best", launch_angle_best)
 print("launch velocity best", launch_velocity_best)
 print("shot std best", shot_std_best)
     
+###################################################################
+# write out data to files
+
 fd = open('output.csv','w')
 fd.write('distance (m),')
 for d in distances:
@@ -114,5 +119,20 @@ fd.write('velocity (m/s),')
 for d in range(distance_increments):
     fd.write(repr(launch_velocity_best[d])+",")
 fd.write("\n")
-
 fd.close()
+
+###################################################################
+# plot all the optimal trajectories
+
+plt.figure(1)
+for traj in trajectory_best:
+    if traj is not None:
+        plt.plot(traj.x, traj.y)
+    
+plt.xlabel('x position')
+plt.ylabel('y position')
+plt.title('optimal launch trajectories')
+plt.grid(True)
+plt.axis([0, np.max(distances), 0, 2*goal_height])
+plt.axis('equal')
+plt.show()
