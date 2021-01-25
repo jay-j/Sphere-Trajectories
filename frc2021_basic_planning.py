@@ -91,6 +91,10 @@ plt.axis([0, np.max(distances), 0, 2*goal_height])
 plt.axis('equal')
 plt.grid(True)
 plt.title('Distance Variation')
+plt.legend(['-0.15 m', 'perfect', '+0.15 m'])
+plt.xlabel("X position, m")
+plt.ylabel("Y position, m")
+
 
 plt.figure(4)
 variation = [-5, 0, 5] # 2 
@@ -103,6 +107,9 @@ plt.axis([0, np.max(distances), 0, 2*goal_height])
 plt.axis('equal')
 plt.grid(True)
 plt.title('Angle Variation')
+plt.legend(['-5 deg', 'perfect', '+5 deg'])
+plt.xlabel("X position, m")
+plt.ylabel("Y position, m")
 
 
 plt.figure(5)
@@ -114,7 +121,11 @@ for i in range(3):
 plt.axis([0, np.max(distances), 0, 2*goal_height])
 plt.axis('equal')
 plt.grid(True)
-plt.title('Velocity Variation')
+plt.title('Speed Variation')
+plt.legend(['-0.25 m/s', 'perfect', '+0.25 m/s'])
+plt.xlabel("X position, m")
+plt.ylabel("Y position, m")
+
 
 ###########################
 # plot a couple different options from the same launch distance
